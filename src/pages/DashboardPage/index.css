@@ -1,0 +1,214 @@
+.DashboardPage-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+    margin-top: 25px;
+    font-family: "Raleway", sans-serif;
+}
+
+.DashboardPage-header-greetings{
+    font-size: 20px;
+
+    margin-left: 20px;
+}
+
+.DashboardPage-header img{
+    width: 42px;
+    height: 42px;
+
+    margin-right: 20px;
+    border-radius: 25%;
+}
+.dashboardPage-main{
+    width: 390px;
+    margin-left: 5px;
+}
+
+.dashboardPage-money-total{
+    width: 360px;
+    height: 175px;
+
+    background-color: black;
+    border-radius: 5px;
+
+    margin-top: 30px;
+    margin-left: 7.5px;
+
+    text-align: center;
+    color: white;
+}
+
+.dashboardPage-money-total p{
+    color:gray;
+
+    font-size: 12px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    padding-top: 15px;
+}
+
+.dashboardPage-money-total-balance{
+    color:white;
+
+    font-size: 40px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    padding-top: 0;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.dashboardPage-money-total-incomes{
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboardPage-money-total-income{
+    width: 50%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboardPage-money-total-spend{
+    width: 50%;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboardPage-money-total-incomes div{
+    margin-left: 40px;
+}
+
+.dashboardPage-money-total-incomes div div{
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 10px;
+}
+
+.dashboardPage-money-total-incomes div div p{
+    margin: 0;
+    padding-top: 5px;
+}
+
+.dashboardPage-money-total-incomes div img{
+    width: 30px;
+    height: 50px;
+
+}
+
+.dashboardPage-spends{
+    margin-top: 50px;
+}
+
+.spend-recent{
+    margin-left: 20px;
+    margin-bottom: 0;
+    margin-top: 20px;
+
+    font-size: 20px;
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+}
+
+.dashboardPage-spends-list{
+    margin-top: 30px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.spend{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 390px;
+    font-family: "Raleway", sans-serif;
+    
+    margin-bottom: 15px;
+}
+
+.spend img{
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+    margin-left: 20px;
+}
+.spend p{
+    margin: 0;
+}
+
+.spend div{
+    margin-right: 110px;
+}
+.spend-name{
+    font-size: 18px;
+
+}
+
+.spend-date{
+    font-size: 14px;
+    color:rgb(163, 163, 163);
+}
+
+.spend-amount{
+    padding-right: 35px;
+    padding-top: 5px;
+
+    font-size: 18px;
+}
+
+.pagination-controls {
+  margin-top: 10px;
+  padding-bottom: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboardPage-spends-buttons{
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 20px 15px 0; /* 40px from left and right edges */
+    z-index: 1000;
+}
+
+.dashboardPage-spends-buttons a{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+
+.circle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;         /* Adjust size */
+  height: 50px;
+  border-radius: 50%;  /* Makes it circular */
+  background-color: #4b4b4b; /* Any color you like */
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.circle-button:hover {
+  background-color: #4b4b4b;
+}
