@@ -1,0 +1,46 @@
+.nav-back-button {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #4b4b4b; /* blue shade */
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+  margin: 10px;
+}
+
+.nav-back-button:hover {
+  background-color: #357ab8;
+}
+
+.user-profile-wrapper{
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center; 
+
+    margin-top: 175px;
+
+    font-family: "Raleway", sans-serif;
+}
+
+.avatar-profile-page{
+    width: 50px;
+    height: 50px;
+
+    border-radius: 5px;
+}
+
+.username-profile-page{
+    margin-top: 0;
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 15px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.user-profile-wrapper p{
+    margin-bottom: 5px;
+}

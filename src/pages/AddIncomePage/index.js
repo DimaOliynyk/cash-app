@@ -22,6 +22,7 @@ async function getUser() {
         method: 'GET',
         headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'ngrok-skip-browser-warning': 'true'
         },
     })
    .then(data => data.json())
@@ -29,11 +30,12 @@ async function getUser() {
 }
 
 const fetchExpenses = async (credentials) => {
-    return fetch('http://192.168.0.90:3000/api/transactions/incomeAdd', {
+    return fetch('http://192.168.0.90:3000/api/transactions/income', {
     method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`,
             'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify(credentials)
     })
@@ -47,22 +49,24 @@ class AddIncomePage extends Component{
             user: "",
             amount: 0,
             name: "",
-            description: ""
+            description: "",
+            selectedCategory: "",
         };
     }
 
     componentDidMount = async e => {
-        const user = await getUser({});
-        this.setState({user: user.user}) 
+        const response = await getUser({});
+        this.setState({user: response.user}) 
     }
 
     handleExpense = async e => {
         e.preventDefault();
         console.log(this.state)
-        const { amount, name, description } = this.state
+        const { amount, name, selectedCategory } = this.state
         const expense = await fetchExpenses({
             amount: amount,
             name: name,
+            category: selectedCategory
         });
 
         if(expense.createdAt) {
@@ -79,16 +83,23 @@ class AddIncomePage extends Component{
         this.setState({name: e.target.value})
     }
 
+    setCat = async e => {
+        this.setState({name: e.target.value})
+    }
+
     // setDesctiption = async e => {
     //     this.setState({amount: e.target.value})
     // }
     render(){
-        const { username, avatarUrl, balance, totalIncome, totalSpend } = this.state.user
-        console.log(this.state.amount)
+        const { username, avatarUrl, balance, totalIncome, totalSpend, categories } = this.state.user
+
         return(
             <>
+                <NavLink to={`/dashboard/${username}`} className="nav-back-button">         
+                    ← Back
+                </NavLink>
                 <header className='AddExpendsPage-header'>
-                    <h2>New Expense</h2>
+                    <h2>New Income</h2>
                 </header>
                 <main className='AddExpendsPage-main'>
                         <form onSubmit={this.handleExpense} className="expense-form">
@@ -104,6 +115,18 @@ class AddIncomePage extends Component{
                                 onChange={e => this.setAmount(e)}
                                 className="expense-input"
                             />
+                              <select
+                                value={this.state.selectedCategory}
+                                onChange={e => this.setState({ selectedCategory: e.target.value })}
+                                className="expense-input"
+                            >
+                                <option value="" disabled>Select Category</option>
+                                {categories && categories.map(el => (
+                                <option key={el._id} value={el._id}>
+                                    {el.name}
+                                </option>
+                                ))}
+                            </select>
                             {/* <input type="text" placeholder="Description" onChange={e => this.setDesctiption(e)} className="expense-input" /> */}
 
                             <button type="submit" className="expense-button">

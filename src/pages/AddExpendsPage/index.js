@@ -22,6 +22,7 @@ async function getUser() {
         method: 'GET',
         headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'ngrok-skip-browser-warning': 'true'
         },
     })
    .then(data => data.json())
@@ -29,11 +30,12 @@ async function getUser() {
 }
 
 const fetchExpenses = async (credentials) => {
-    return fetch('http://192.168.0.90:3000/api/transactions/', {
+    return fetch('http://192.168.0.90:3000/api/transactions/expense', {
     method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`,
             'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true'
         },
         body: JSON.stringify(credentials)
     })
@@ -52,8 +54,8 @@ class AddExpendsPage extends Component{
     }
 
     componentDidMount = async e => {
-        const user = await getUser({});
-        this.setState({user: user.user}) 
+        const response = await getUser({});
+        this.setState({user: response.user}) 
     }
 
     handleExpense = async e => {
@@ -87,6 +89,9 @@ class AddExpendsPage extends Component{
         console.log(this.state.amount)
         return(
             <>
+                <NavLink to={`/dashboard/${username}`} className="nav-back-button">         
+                    ← Back
+                </NavLink>
                 <header className='AddExpendsPage-header'>
                     <h2>New Expense</h2>
                 </header>

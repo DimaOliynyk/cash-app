@@ -2,8 +2,12 @@
 
 }
 
+.LoginPage-inputs{
+    
+}
+
 .LoginPage-inputs form{
-    margin-top: 130px;
+    margin-top: 75px;
 
     display: flex;
     flex-direction: column;
@@ -20,15 +24,14 @@
     border: 1px solid gray;
 }
 
-.LoginPage-login{
-    display: 'contents';
+.LoginPage-login {
     width: 250px;
     height: 50px;
-
+    background-color: rgb(65, 65, 65);
     border-radius: 10px;
-
-    margin: 10px;
-    margin-left: 60px;
-    margin-top: 50px;
-    border: 1px solid black;
+    margin: 50px auto 10px auto;
+    display: inline-block; /* or remove this line */
+    color: white; /* optional for text color */
+    border: none; /* optional, if you want no border */
+    cursor: pointer; /* makes it look clickable */
 }
