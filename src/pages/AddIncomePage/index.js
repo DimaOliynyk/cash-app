@@ -61,18 +61,24 @@ class AddIncomePage extends Component{
 
     handleExpense = async e => {
         e.preventDefault();
-        console.log(this.state)
-        const { amount, name, selectedCategory } = this.state
+        if (this.state.selectedCategory === null) {
+            return alert('Choose a category!');
+        }
+        const { amount, name, selectedCategory, user } = this.state;
+
+        // Call your API function to create the expense
         const expense = await fetchExpenses({
-            amount: amount,
-            name: name,
-            category: selectedCategory
+            amount,
+            name,
+            category: selectedCategory,
         });
 
-        if(expense.createdAt) {
-        // Programmatically navigate after successful expense creation
-        this.props.navigate(`/dashboard/${this.state.user.username}`); // or any route you want
-    }
+        if (expense && expense.createdAt) {
+            // Navigate programmatically after creation
+            this.props.navigate(`/dashboard/${user.username}`);
+        } else {
+            alert('Failed to create expense.');
+        }
     } 
 
     setAmount = async e => {
@@ -85,6 +91,7 @@ class AddIncomePage extends Component{
 
     setCat = async e => {
         this.setState({name: e.target.value})
+
     }
 
     // setDesctiption = async e => {

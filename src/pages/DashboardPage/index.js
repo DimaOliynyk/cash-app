@@ -6,7 +6,7 @@ import './index.css'
 import arrowDown from '../../images/arrow-down.png';
 import arrowUp from '../../images/arrow-up.png';
 import blackImage from '../../images/black-image.png';
-
+import LoginPage from '../LoginPage/index';
 
 import ExpensesLineChart from '../../components/ExpensesLineChart';
 

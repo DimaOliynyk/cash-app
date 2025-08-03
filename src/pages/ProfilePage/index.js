@@ -38,7 +38,8 @@ class ProfilePage extends Component{
 
     logout = () => {
         localStorage.clear();
-        this.props.navigate("/");
+        this.props.setToken(null);  // update App state to logged out
+        this.props.navigate('/login'); // redirect to login
     }
     render(){
         const { username, avatarUrl, balance, totalIncome, totalSpend } = this.state.user;

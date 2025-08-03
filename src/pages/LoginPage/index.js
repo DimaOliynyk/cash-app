@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { useNavigate } from 'react-router-dom';
 import './index.css'
 import logo from '../../images/brand-logo.png';
 
@@ -19,8 +19,9 @@ async function loginUser(credentials) {
 export default function LoginPage({ setToken }) {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
+    const [rightPanelActive, setRightPanelActive] = useState(false);
     const [error, setError] = useState(''); // For error message
-
+    const navigate = useNavigate();
     const handleSubmit = async e => {
         e.preventDefault();
 
@@ -44,10 +45,12 @@ export default function LoginPage({ setToken }) {
           username,
           password,
         });
-        setToken(token);
         localStorage.setItem('token', token.token);
         localStorage.setItem('username', token.user.username);
 
+        setToken(token.token);
+
+        navigate(`/dashboard/${token.user.username}`);
     } catch (err) {
         // Handle loginUser errors (e.g. wrong credentials)
         alert('Login failed. Please check your credentials.');
@@ -55,21 +58,39 @@ export default function LoginPage({ setToken }) {
       }
     } 
 
-  return(
-    <main className='LoginPage-main'>
-        <img src={logo} className='GetStartedPage-logo' />
+  return (
+    <div className="signInUpRoot-LoginPage">
+      <div className="signInPageWrapper-LoginPage">
 
-        <div className='LoginPage-inputs'>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder='username' onChange={e => setUserName(e.target.value)}/>
-                <input type="text" placeholder='password' onChange={e => setPassword(e.target.value)}/>
-
-                <button onClick={handleSubmit} className='LoginPage-login' type="submit">Login</button>
-            </form>
+        <div className="container-LoginPage signInContainer-LoginPage standaloneSignIn-LoginPage">
+          <form action="#" className='form-LoginPage'>
+            <h1 className="heading-LoginPage">Sign in</h1>
+            {/* <div className="socialContainer-LoginPage">
+              <a href="#" className="social-LoginPage">
+                <i className="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" className="social-LoginPage">
+                <i className="fab fa-google-plus-g"></i>
+              </a>
+              <a href="#" className="social-LoginPage">
+                <i className="fab fa-linkedin-in"></i>
+              </a>
+            </div> */}
+            <span className="span-LoginPage">or use your account</span>
+            <input type="email" placeholder="Username" className="input-LoginPage" onChange={e => setUserName(e.target.value)}/>
+            <input type="password" placeholder="Password" className="input-LoginPage" onChange={e => setPassword(e.target.value)}/>
+            <a href="#" className="link-LoginPage">
+              Forgot your password?
+            </a>
+            <button className="button-LoginPage" onClick={handleSubmit}>Sign In</button>
+          </form>
         </div>
-    </main>
-  )
+
+      </div>
+    </div>
+  );
 }
+
 
 LoginPage.propTypes = {
   setToken: PropTypes.func.isRequired

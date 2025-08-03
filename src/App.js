@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from "react-router";
 import { Navigate } from "react-router-dom";
 import './App.css';
@@ -13,28 +13,37 @@ import ExpenseInfoPage from './pages/ExpenseInfoPage';
 
 function App() {
   // localStorage.clear()
-  const [token, setToken] = useState();
+  // Initialize token state from localStorage
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-  if(!localStorage.getItem("token")) {
-    return <LoginPage setToken={setToken} />
-  } 
+  // Sync token state with localStorage on mount (optional)
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+
+  if (!token) {
+    // Pass setToken to LoginPage so it can update token after login
+    return <LoginPage setToken={setToken} />;
+  }
 
   return (
     <div className="wrapper">
       <Routes>
-            <Route path="/profile/:userId" element={<ProfilePage/>}/>
-
-            <Route path="/dashboard/:userId" element={<DashboardPage/>}/>
-            <Route path="/dashboard/addExpense/:userId" element={<AddExpendsPage/>}/>
-            <Route path="/dashboard/addIncome/:userId" element={<AddIncomePage/>}/>
-            <Route path="/transactions/:transactionId" element={<ExpenseInfoPage/>}/>
-            <Route
-              path="/"
-              element={<Navigate to={`/dashboard/${localStorage.getItem("username")}`} replace />}
-            />
-        </Routes>
+        {/* Pass setToken to ProfilePage for logout */}
+        <Route path="/profile/:userId" element={<ProfilePage setToken={setToken} />} />
+        <Route path="/login" element={<LoginPage setToken={setToken} />} />
+        <Route path="/dashboard/:userId" element={<DashboardPage />} />
+        <Route path="/dashboard/addExpense/:userId" element={<AddExpendsPage />} />
+        <Route path="/dashboard/addIncome/:userId" element={<AddIncomePage />} />
+        <Route path="/transactions/:transactionId" element={<ExpenseInfoPage />} />
+        <Route
+          path="/"
+          element={<Navigate to={`/dashboard/${localStorage.getItem("username")}`} replace />}
+        />
+      </Routes>
     </div>
   );
 }
+
 
 export default App;

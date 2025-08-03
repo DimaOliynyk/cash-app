@@ -1,28 +1,32 @@
-.DashboardPage-header{
+.DashboardPage-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
-
-    margin-top: 25px;
+    max-width: 360px;     /* max width instead of fixed width */
+    width: 90%;           /* or 100%, or any percentage */
+    margin: 25px auto 0 auto; 
     font-family: "Raleway", sans-serif;
+    box-sizing: border-box; /* ensures padding/borders won’t break layout */
+    padding: 0 10px;      /* optional padding so content doesn’t touch edges */
 }
 
-.DashboardPage-header-greetings{
+.DashboardPage-header-greetings {
     font-size: 20px;
-
-    margin-left: 20px;
+    margin-top: 30px;
+    margin-bottom: 0;
 }
 
-.DashboardPage-header img{
+.DashboardPage-header img {
     width: 42px;
     height: 42px;
-
     border-radius: 25%;
-    margin-right: 20px;
+    margin-top: 15px;
 }
+
 .dashboardPage-main{
     width: 390px;
+
+    margin: 0 auto;
 }
 
 .dashboardPage-container {
@@ -215,17 +219,17 @@
 .dashboardPage-spends-buttons {
     position: fixed;
     bottom: 10px;
-    left: 0;
-    width: 100%;
+    left: 50%;                 /* move to 50% from the left */
+    transform: translateX(-50%); /* shift back by half its width */
+    width: 390px;
     display: flex;
     justify-content: space-between;
-    padding: 0 20px 15px 0;
+    padding: 0 20px 15px 20px;
     z-index: 1000;
 }
-
 .dashboardPage-spends-buttons a {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 
@@ -262,4 +266,21 @@
 .minimal-chart-container *:focus {
     outline: none !important;
     box-shadow: none !important;
+}
+
+
+.dashboardPage-chart-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 20px 0;
+
+  margin-left: -7.5px;
+}
+
+.dashboardPage-chart-container > * {
+  width: 100% !important;    /* force full width */
+  max-width: 600px;          /* max width */
+  margin: 0 auto;            /* center block if it shrinks */
+  box-sizing: border-box;
 }

@@ -1,37 +1,134 @@
-.LoginPage-main{
-
+.signInUpRoot-LoginPage {
+  display: grid;
+  place-items: center;
+  height: 100vh;      /* full viewport height */
+  width: 100vw;
+  background: #f6f5f7;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  padding: 20px;
+  overflow-x: hidden;
 }
 
-.LoginPage-inputs{
-    
+.signInPageWrapper-LoginPage {
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 10px;
 }
 
-.LoginPage-inputs form{
-    margin-top: 75px;
-
-    display: flex;
-    flex-direction: column;
+.container-LoginPage.standaloneSignIn-LoginPage {
+  width: 100% !important;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  background: #fff;
+  margin-bottom: 40px;
+  min-height: 350px;  /* enough height for vertical centering */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.form-LoginPage {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.title-LoginPage {
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
 }
 
-.LoginPage-inputs form input{
-    width: 300px;
-    height: 30px;
 
-    margin-left: 35px;
-    margin-top: 20px;
-
-    border-radius: 5px;
-    border: 1px solid gray;
+.heading-LoginPage {
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #FF4B2B;
+  font-size: 20px;
 }
 
-.LoginPage-login {
-    width: 250px;
-    height: 50px;
-    background-color: rgb(65, 65, 65);
-    border-radius: 10px;
-    margin: 50px auto 10px auto;
-    display: inline-block; /* or remove this line */
-    color: white; /* optional for text color */
-    border: none; /* optional, if you want no border */
-    cursor: pointer; /* makes it look clickable */
+.socialContainer-LoginPage {
+  margin: 20px 0;
+}
+
+.social-LoginPage {
+  border: 1px solid #DDDDDD;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 8px;
+  height: 40px;
+  width: 40px;
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.social-LoginPage:hover {
+  background-color: #ff4b2b;
+  color: white;
+  border-color: #ff4b2b;
+  cursor: pointer;
+}
+
+.span-LoginPage {
+  font-size: 12px;
+  color: #999;
+}
+
+.input-LoginPage {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 80%;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.link-LoginPage {
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 15px 0;
+  display: inline-block;
+}
+
+.link-LoginPage:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.button-LoginPage {
+  border-radius: 20px;
+  border: 1px solid #FF4B2B;
+  background-color: #FF4B2B;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 45px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.button-LoginPage:active {
+  transform: scale(0.95);
+}
+
+.button-LoginPage:focus {
+  outline: none;
 }
