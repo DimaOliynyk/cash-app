@@ -64,12 +64,13 @@ class AddIncomePage extends Component{
         if (this.state.selectedCategory === null) {
             return alert('Choose a category!');
         }
-        const { amount, name, selectedCategory, user } = this.state;
-
+        const { amount, name, selectedCategory, user, description } = this.state;
+        console.log(this.state)
         // Call your API function to create the expense
         const expense = await fetchExpenses({
             amount,
             name,
+            description,
             category: selectedCategory,
         });
 
@@ -89,8 +90,8 @@ class AddIncomePage extends Component{
         this.setState({name: e.target.value})
     }
 
-    setCat = async e => {
-        this.setState({name: e.target.value})
+    setDescription = async e => {
+        this.setState({description: e.target.value})
 
     }
 
@@ -120,6 +121,12 @@ class AddIncomePage extends Component{
                                 type="number"
                                 placeholder="Amount"
                                 onChange={e => this.setAmount(e)}
+                                className="expense-input"
+                            />
+                            <input
+                                type="text"
+                                placeholder="Description"
+                                onChange={e => this.setDescription(e)}
                                 className="expense-input"
                             />
                               <select

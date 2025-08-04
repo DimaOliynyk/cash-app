@@ -106,7 +106,10 @@ export default class DashboardPage extends Component {
       const currentExpenses = expenses.slice(startIndex, startIndex + pageSize)
       
       const chartData = this.getChartData();
-      const totalPages = Math.ceil(expenses.length / pageSize);
+      let totalPages = Math.ceil(expenses.length / pageSize);
+      if(totalPages === 0){
+        totalPages = 1
+      }
     return (
       <>
         <header className="DashboardPage-header">
