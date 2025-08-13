@@ -1,13 +1,11 @@
-import {React, Component} from 'react';
-import { redirect } from "react-router-dom";
+import { Component} from 'react';
+
 import { NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
-import './index.css'
+import { getUser, addIncomeRequest } from '../../api';
 
-import arrowDown from '../../images/arrow-down.png';
-import arrowUp from '../../images/arrow-up.png';
-import blackImage from '../../images/black-image.png';
+import './index.css'
 
 
 function withRouter(Component) {
@@ -16,31 +14,6 @@ function withRouter(Component) {
     return <Component {...props} navigate={navigate} />;
   };
 }
-
-async function getUser() {
-    return fetch('http://192.168.0.90:3000/api/auth/me', {
-        method: 'GET',
-        headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'ngrok-skip-browser-warning': 'true'
-        },
-    })
-   .then(data => data.json())
-
-}
-
-const fetchExpenses = async (credentials) => {
-    return fetch('http://192.168.0.90:3000/api/transactions/income', {
-    method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true'
-        },
-        body: JSON.stringify(credentials)
-    })
-   .then(data => data.json())
-};
 
 class AddIncomePage extends Component{
     constructor(props) {
@@ -67,7 +40,7 @@ class AddIncomePage extends Component{
         const { amount, name, selectedCategory, user, description } = this.state;
         console.log(this.state)
         // Call your API function to create the expense
-        const expense = await fetchExpenses({
+        const expense = await addIncomeRequest({
             amount,
             name,
             description,
@@ -95,9 +68,6 @@ class AddIncomePage extends Component{
 
     }
 
-    // setDesctiption = async e => {
-    //     this.setState({amount: e.target.value})
-    // }
     render(){
         const { username, avatarUrl, balance, totalIncome, totalSpend, categories } = this.state.user
 

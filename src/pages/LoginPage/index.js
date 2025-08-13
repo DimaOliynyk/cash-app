@@ -1,60 +1,54 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
+import { loginUser } from '../../api';
+
 import './index.css'
+
 import logo from '../../images/brand-logo.png';
 
-async function loginUser(credentials) {
- return fetch('http://192.168.0.90:3000/api/auth/login', {
-   method: 'POST',
-   headers: {
-     'Content-Type': 'application/json',
-     'ngrok-skip-browser-warning': 'true'
-   },
-   body: JSON.stringify(credentials)
- })
-   .then(data => data.json())
-}
 
 export default function LoginPage({ setToken }) {
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUserName] = useState('');
+    const [password, setPassword] = useState('');
     const [rightPanelActive, setRightPanelActive] = useState(false);
     const [error, setError] = useState(''); // For error message
     const navigate = useNavigate();
     const handleSubmit = async e => {
         e.preventDefault();
 
-    if ((!username || !username.trim()) && (!password || !password.trim())) {
-      alert('Please enter your username and password.');
-      return;
-    }
-    if (!username || !username.trim()) {
-      alert('Please enter your username.');
-      return;
-    }
-    if (!password || !password.trim()) {
-      alert('Please enter your password.');
-      return;
-    }
+      if ((!username || !username.trim()) && (!password || !password.trim())) {
+        alert('Please enter your username and password.');
+        return;
+      }
+      if (!username || !username.trim()) {
+        alert('Please enter your username.');
+        return;
+      }
+      if (!password || !password.trim()) {
+        alert('Please enter your password.');
+        return;
+      }
 
-    setError(''); // Clear any previous errors
+      setError(''); // Clear any previous errors
 
-    try {
-        const token = await loginUser({
-          username,
-          password,
-        });
-        localStorage.setItem('token', token.token);
-        localStorage.setItem('username', token.user.username);
+      try {
+        
+        const tokenData = await loginUser({ username, password });
 
-        setToken(token.token);
+        // Save token and username in localStorage
+        localStorage.setItem('token', tokenData.token);
+        localStorage.setItem('username', tokenData.user.username);
 
-        navigate(`/dashboard/${token.user.username}`);
-    } catch (err) {
-        // Handle loginUser errors (e.g. wrong credentials)
+        setToken(tokenData.token);
+
+        // Navigate to dashboard
+        navigate(`/dashboard/${tokenData.user.username}`);
+      } catch (err) {
         alert('Login failed. Please check your credentials.');
-        console.error(err);
+        console.error('Login error:', err);
+        setError('Login failed. Please check your credentials.');
       }
     } 
 
@@ -63,7 +57,7 @@ export default function LoginPage({ setToken }) {
       <div className="signInPageWrapper-LoginPage">
 
         <div className="container-LoginPage signInContainer-LoginPage standaloneSignIn-LoginPage">
-          <form action="#" className='form-LoginPage'>
+          <form className='form-LoginPage'>
             <h1 className="heading-LoginPage">Sign in</h1>
             {/* <div className="socialContainer-LoginPage">
               <a href="#" className="social-LoginPage">

@@ -10,31 +10,7 @@ import LoginPage from '../LoginPage/index';
 
 import ExpensesLineChart from '../../components/ExpensesLineChart';
 
-async function getUser() {
-    return fetch('http://192.168.0.90:3000/api/auth/me', {
-        method: 'GET',
-        headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'ngrok-skip-browser-warning': 'true'
-        },
-    })
-   .then(data => data.json())
-
-}
-
-const fetchExpenses = async (credentials) => {
-    return fetch('http://192.168.0.90:3000/api/transactions/', {
-    method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true'
-        },
-        body: JSON.stringify(credentials)
-    })
-   .then(data => data.json())
-};
-
+import { getUser, fetchExpenses } from '../../api';
 
 
 

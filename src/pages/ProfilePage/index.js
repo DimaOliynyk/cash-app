@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+
+
+import { getUser } from '../../api';
 
 import './index.css';
 
-async function getUser() {
-    return fetch('http://192.168.0.90:3000/api/auth/me', {
-        method: 'GET',
-        headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        'ngrok-skip-browser-warning': 'true'
-        },
-    })
-   .then(data => data.json())
-
-}
 
 function withNavigation(Component) {
   return function Wrapper(props) {
