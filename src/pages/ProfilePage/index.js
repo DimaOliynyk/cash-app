@@ -15,25 +15,21 @@ function withNavigation(Component) {
 }
 
 class ProfilePage extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: {},
-        };
-    }
-
-    componentDidMount = async () => {
-        const response = await getUser();
-        this.setState({ user: response.user });
-    }
 
     logout = () => {
         localStorage.clear();
         this.props.setToken(null);  // update App state to logged out
         this.props.navigate('/login'); // redirect to login
     }
+    
     render(){
-        const { username, avatarUrl, balance, totalIncome, totalSpend } = this.state.user;
+        if (!this.props.user) {
+            return <p>Loading...</p>; // user not fetched yet
+        }
+    
+        const { user } = this.props.user;
+
+        const { username, avatarUrl, balance, totalIncome, totalSpend } = user;
         return(
             <>    
                 <NavLink to={`/dashboard/${username}`} className="nav-back-button">         

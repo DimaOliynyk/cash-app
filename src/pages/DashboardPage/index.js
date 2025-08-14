@@ -10,7 +10,7 @@ import LoginPage from '../LoginPage/index';
 
 import ExpensesLineChart from '../../components/ExpensesLineChart';
 
-import { getUser, fetchExpenses } from '../../api';
+import { fetchExpenses } from '../../api';
 
 
 
@@ -26,9 +26,6 @@ export default class DashboardPage extends Component {
   }
 
   componentDidMount = async () => {
-    const response = await getUser();
-    this.setState({ user: response.user });
-
     const expenses = (await fetchExpenses()).reverse();
     this.setState({ expenses });
   };
@@ -74,7 +71,13 @@ export default class DashboardPage extends Component {
   };
 
   render() {
-      const { username, avatarUrl, balance, totalIncome, totalSpend } = this.state.user;
+    if (!this.props.user) {
+      return <p>Loading...</p>; // user not fetched yet
+    }
+    
+    const { user } = this.props.user;
+
+    const { username, avatarUrl, balance, totalIncome, totalSpend } = user;
       const { expenses, currentPage, pageSize } = this.state;
       
       // Calculate which expenses to show on current page
@@ -86,104 +89,107 @@ export default class DashboardPage extends Component {
       if(totalPages === 0){
         totalPages = 1
       }
-    return (
-      <>
-        <header className="DashboardPage-header">
-          <h2 className="DashboardPage-header-greetings">Hi, {username}!</h2>
 
-          <NavLink to={`/profile/${username}`}>
-            <img src={avatarUrl} alt="user-profile-picture" />
-          </NavLink>
-        </header>
-        <main className="dashboardPage-main">
-          <div className="dashboardPage-container">
-            <div className="dashboardPage-money-total">
-              <p>Your total balance</p>
-              <h3 className="dashboardPage-money-total-balance">${balance}</h3>
 
-              <div className="dashboardPage-money-total-incomes">
-                <div className="dashboardPage-money-total-income">
-                  <img src={arrowUp} alt="Income arrow" />
-                  <div>
-                    <p>Income</p>
-                    <p>${totalIncome}</p>
+      return (
+        <>
+          <header className="DashboardPage-header">
+            <h2 className="DashboardPage-header-greetings">Hi, {username}!</h2>
+
+            <NavLink to={`/profile/${username}`}>
+              <img src={avatarUrl} alt="user-profile-picture" />
+            </NavLink>
+          </header>
+          <main className="dashboardPage-main">
+            <div className="dashboardPage-container">
+              <div className="dashboardPage-money-total">
+                <p>Your total balance</p>
+                <h3 className="dashboardPage-money-total-balance">${balance}</h3>
+
+                <div className="dashboardPage-money-total-incomes">
+                  <div className="dashboardPage-money-total-income">
+                    <img src={arrowUp} alt="Income arrow" />
+                    <div>
+                      <p>Income</p>
+                      <p>${totalIncome}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="dashboardPage-money-total-spend">
-                  <img src={arrowDown} alt="Spend arrow" />
-                  <div>
-                    <p>Spend</p>
-                    <p>${totalSpend}</p>
+                  <div className="dashboardPage-money-total-spend">
+                    <img src={arrowDown} alt="Spend arrow" />
+                    <div>
+                      <p>Spend</p>
+                      <p>${totalSpend}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {chartData && chartData.length > 0 && chartData.some(item => item.value !== 0) && (
-            <div className="dashboardPage-chart-container">
-              <ExpensesLineChart data={chartData} />
-            </div>
-          )}
+            {chartData && chartData.length > 0 && chartData.some(item => item.value !== 0) && (
+              <div className="dashboardPage-chart-container">
+                <ExpensesLineChart data={chartData} />
+              </div>
+            )}
 
-          <div className="dashboardPage-spends">
-            <p className="spend-recent">Recent</p>
-            <div className="dashboardPage-spends-list">
-              {currentExpenses.map((expense) => (
-                <NavLink
-                  to={`/transactions/${expense.id}`}
-                  key={expense.id}
-                  className="spend"
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  {/* Show the category icon if exists, else fallback to blackImage */}
-                  <img
-                    src={expense.category?.iconUrl || blackImage}
-                    alt={expense.category?.name || "expense icon"}
-                    style={{ width: 24, height: 24 }}
-                  />
-                  <div>
-                    <p className="spend-name">{expense.name || 'Unnamed'}</p>
-                    <p className="spend-date">
-                      {new Date(expense.createdAt).toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                      })}
+            <div className="dashboardPage-spends">
+              <p className="spend-recent">Recent</p>
+              <div className="dashboardPage-spends-list">
+                {currentExpenses.map((expense) => (
+                  <NavLink
+                    to={`/transactions/${expense.id}`}
+                    key={expense.id}
+                    state={{ expense }}
+                    className="spend"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    {/* Show the category icon if exists, else fallback to blackImage */}
+                    <img
+                      src={expense.category?.iconUrl || blackImage}
+                      alt={expense.category?.name || "expense icon"}
+                      style={{ width: 24, height: 24 }}
+                    />
+                    <div>
+                      <p className="spend-name">{expense.name || 'Unnamed'}</p>
+                      <p className="spend-date">
+                        {new Date(expense.createdAt).toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                    <p className="spend-amount">
+                      {expense.type} {expense.amount}$
                     </p>
-                  </div>
-                  <p className="spend-amount">
-                    {expense.type} {expense.amount}$
-                  </p>
+                  </NavLink>
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              <div className="pagination-controls">
+                <button onClick={this.handlePrevPage} disabled={currentPage === 1}>
+                  Prev
+                </button>
+                <span>
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button onClick={this.handleNextPage} disabled={currentPage === totalPages}>
+                  Next
+                </button>
+              </div>
+
+              <div className="dashboardPage-spends-buttons">
+                <NavLink to={`/dashboard/addExpense/${username}`} className="circle-button">
+                  -
                 </NavLink>
-              ))}
-            </div>
 
-            {/* Pagination Controls */}
-            <div className="pagination-controls">
-              <button onClick={this.handlePrevPage} disabled={currentPage === 1}>
-                Prev
-              </button>
-              <span>
-                Page {currentPage} of {totalPages}
-              </span>
-              <button onClick={this.handleNextPage} disabled={currentPage === totalPages}>
-                Next
-              </button>
+                <NavLink to={`/dashboard/addIncome/${username}`} className="circle-button">
+                  +
+                </NavLink>
+              </div>
             </div>
-
-            <div className="dashboardPage-spends-buttons">
-              <NavLink to={`/dashboard/addExpense/${username}`} className="circle-button">
-                -
-              </NavLink>
-
-              <NavLink to={`/dashboard/addIncome/${username}`} className="circle-button">
-                +
-              </NavLink>
-            </div>
-          </div>
-        </main>
-      </>
-    );
+          </main>
+        </>
+      );
   }
 }

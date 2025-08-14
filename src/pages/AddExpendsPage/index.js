@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
 
-import { getUser, addExpenseRequest } from '../../api';
+import { addExpenseRequest } from '../../api';
 
 import './index.css' // css styling
 
@@ -24,14 +24,6 @@ class AddExpendsPage extends Component{
             description: "" // Expense description
         };
     }
-
-    
-    // Lifecycle method to fetch user data when the component mounts 
-    componentDidMount = async e => {
-        const response = await getUser({});
-        this.setState({user: response.user}) 
-    }
-
 
     // Handle form submission to add a new expense
     handleExpense = async e => {
@@ -61,8 +53,13 @@ class AddExpendsPage extends Component{
     }   
 
 
-    render(){
-        const { username } = this.state.user
+    render(){   
+        if (!this.props.user) {
+            return <p>Loading...</p>; // user not fetched yet
+        }
+    
+        const { user } = this.props.user;
+        const { username } = user
 
         return(
             <>

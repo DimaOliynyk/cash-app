@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
-import { getUser, getTransaction, deleteTransaction } from '../../api';
+import { deleteTransaction } from '../../api';
 
 import './index.css';
 
+export function withLocation(Component) {
+  return function LocationAwareComponent(props) {
+    const location = useLocation();
+    return <Component {...props} location={location} />;
+  };
+}
 
-export default class ExpenseInfoPage extends Component {
+class ExpenseInfoPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
       transaction: {},
       transactionId: null,
     };
@@ -22,16 +26,10 @@ export default class ExpenseInfoPage extends Component {
     const transactionId = urlParts[urlParts.length - 1]; // last part of path
     this.setState({ transactionId });
 
-    const response = await getUser();
-    this.setState({ user: response.user });
-
-    const transaction = await getTransaction();
-    this.setState({ transaction: transaction });
   };
 
   handleDelete = async () => {
     const { transactionId } = this.state;
-    const token = localStorage.getItem("token");
 
     await deleteTransaction(transactionId);
 
@@ -41,8 +39,19 @@ export default class ExpenseInfoPage extends Component {
   };
 
   render() {
-    const { username } = this.state.user
-    const { name, amount, category, description  } = this.state.transaction;
+    if (!this.props.user) {
+      return <p>Loading...</p>; // user not fetched yet
+    }
+
+    if (!this.props.location?.state?.expense) {
+      return <p>No expense data found.</p>;
+    }
+
+    const { user } = this.props.user;
+    const { expense } = this.props.location.state || {};
+
+    const { username } = user
+    const { name, amount, category, description  } = expense;
     console.log(this.state.transaction)
     if (!this.state.transaction) {
         return null; // or a loading indicator/spinner if needed
@@ -73,3 +82,6 @@ export default class ExpenseInfoPage extends Component {
     );
   }
 }
+
+
+export default withLocation(ExpenseInfoPage);

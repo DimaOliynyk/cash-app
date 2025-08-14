@@ -16,6 +16,9 @@ export const loginUser = async ({ username, password }) => {
         }
       }
     );
+    localStorage.setItem("token", response.data.token); // adjust if token is nested differently
+
+    
     return response.data;
   } catch (error) {
     console.error("Login failed:", error.response || error.message);

@@ -6,13 +6,10 @@ import { loginUser } from '../../api';
 
 import './index.css'
 
-import logo from '../../images/brand-logo.png';
-
-
 export default function LoginPage({ setToken }) {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [rightPanelActive, setRightPanelActive] = useState(false);
+
     const [error, setError] = useState(''); // For error message
     const navigate = useNavigate();
     const handleSubmit = async e => {
@@ -36,10 +33,8 @@ export default function LoginPage({ setToken }) {
       try {
         
         const tokenData = await loginUser({ username, password });
-
+        localStorage.setItem("token", tokenData.token);
         // Save token and username in localStorage
-        localStorage.setItem('token', tokenData.token);
-        localStorage.setItem('username', tokenData.user.username);
 
         setToken(tokenData.token);
 

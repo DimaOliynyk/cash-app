@@ -3,7 +3,7 @@ import { Component} from 'react';
 import { NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
-import { getUser, addIncomeRequest } from '../../api';
+import { addIncomeRequest } from '../../api';
 
 import './index.css'
 
@@ -19,17 +19,11 @@ class AddIncomePage extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            user: "",
             amount: 0,
             name: "",
             description: "",
             selectedCategory: "",
         };
-    }
-
-    componentDidMount = async e => {
-        const response = await getUser({});
-        this.setState({user: response.user}) 
     }
 
     handleExpense = async e => {
@@ -49,7 +43,7 @@ class AddIncomePage extends Component{
 
         if (expense && expense.createdAt) {
             // Navigate programmatically after creation
-            this.props.navigate(`/dashboard/${user.username}`);
+            this.props.navigate(`/dashboard/${user}`);
         } else {
             alert('Failed to create expense.');
         }
@@ -69,7 +63,13 @@ class AddIncomePage extends Component{
     }
 
     render(){
-        const { username, avatarUrl, balance, totalIncome, totalSpend, categories } = this.state.user
+        if (!this.props.user) {
+            return <p>Loading...</p>; // user not fetched yet
+        }
+    
+        const { user } = this.props.user;
+
+        const { username, categories } = user
 
         return(
             <>
