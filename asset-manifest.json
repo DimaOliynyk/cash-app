@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/cash-app/static/css/main.7e26a84e.css",
+    "main.js": "/cash-app/static/js/main.76a6f959.js",
+    "index.html": "/cash-app/index.html",
+    "main.7e26a84e.css.map": "/cash-app/static/css/main.7e26a84e.css.map",
+    "main.76a6f959.js.map": "/cash-app/static/js/main.76a6f959.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7e26a84e.css",
+    "static/js/main.76a6f959.js"
+  ]
+}
