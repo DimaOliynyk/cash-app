@@ -37,7 +37,7 @@ class AddExpendsPage extends Component{
             name: name,
             description: description
         });
-
+        console.log(description)
         if(expense.createdAt) {
             // Navigate to user dashboard if expense is successfully created
             this.props.navigate(`/dashboard/${this.state.user.username}`); 
@@ -47,6 +47,7 @@ class AddExpendsPage extends Component{
 
     handleInputChange = e => {
         const { name, value } = e.target;
+        console.log(e.target.value)
         this.setState({ 
             [name]: name === 'amount' ? Number(value) : value 
         });
@@ -78,18 +79,21 @@ class AddExpendsPage extends Component{
                         <form onSubmit={this.handleExpense} className="expense-form">
                             <input
                                 type="text"
+                                name="name"
                                 placeholder="Name"
                                 onChange={e => this.handleInputChange(e)}
                                 className="expense-input"
                             />
                             <input
                                 type="number"
+                                name="amount"
                                 placeholder="Amount"
                                 onChange={e => this.handleInputChange(e)}
                                 className="expense-input"
                             />
                             <input
                                 type="text"
+                                name="description"
                                 placeholder="Description"
                                 onChange={e => this.handleInputChange(e)}
                                 className="expense-input"

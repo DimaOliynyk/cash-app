@@ -1,4 +1,136 @@
-.nav-back-button {
+hr{
+  opacity: 0.4;
+  margin-top: -1px;
+}
+
+.profile-page-wrapper{
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 30px;
+  font-family: "Raleway", sans-serif;
+}
+
+.head-wrapper{
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+}
+
+.head-info-profile-page h2{
+  font-size: 28px;
+
+  margin-bottom: 10px;
+}
+
+.user-image{
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin-top: 15px;
+}
+
+.settings-variants{
+  display: flex;
+  flex-direction: row;
+}
+
+.settings-variants div.active {
+  font-weight: bold;
+  border-bottom: 2px solid #007bff; /* blue underline */
+  color: #007bff; /* active text color */
+  border-radius: 5px 5px 0 0;
+  padding-bottom: 6px;
+}
+
+.settings-variants div{
+  margin-right: 20px;
+}
+
+.settings-variants div p{
+  display: inline-block; /* makes the element fit content width */
+  font-size: 15;
+
+  margin-bottom: 5px;
+}
+
+.personal-profile-info{
+  margin-top: 40px;
+}
+
+.personal-info-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.personal-info-container a{
+  display: inline-block;
+
+  color:#357ab8;
+  text-decoration: none;
+}
+
+.personal-info-container p {
+  margin: 0;
+}
+
+.personal-info-container div{
+  display: flex;
+  flex-direction: column;
+}
+
+.personal-info-container div h4{
+  margin: 0;
+  margin-bottom: 10px;
+
+  color: #4b4b4b;
+}
+
+.personal-info-container div p{
+  opacity: 0.5;
+
+  text-transform: capitalize;
+}
+
+.logout-button{
+  display: inline-block;
+  padding: 5px;
+  background-color: transparent;
+
+  border: 0.5px solid black;
+  border-radius: 10px;
+}
+
+.logout-button p{
+    opacity: 0.5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.profile-wrapper{
+  margin: 0 auto;
+}
+
+.nav-back-button-profilepage {
   display: inline-block;
   padding: 5px 10px;
   background-color: #4b4b4b; /* blue shade */
@@ -8,10 +140,11 @@
   font-weight: bold;
   transition: background-color 0.3s ease;
   margin-bottom: 20px;
-  margin: 10px;
+  margin-left: 30px;
+  margin-top: 30px;
 }
 
-.nav-back-button:hover {
+.nav-back-button-profilepage:hover {
   background-color: #357ab8;
 }
 

@@ -12,6 +12,8 @@ import AddExpendsPage from './pages/AddExpendsPage';
 import AddIncomePage from './pages/AddIncomePage';
 import ProfilePage from './pages/ProfilePage';
 import ExpenseInfoPage from './pages/ExpenseInfoPage';
+import RegisterPage from './pages/RegisterPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 
 // const getUser = ({ token, children }) => {
 //   return token ? children : <Navigate to="/login" replace />;
@@ -37,24 +39,47 @@ function App() {
     fetchUser();
   }, [token]);
 
-  if (!token) {
-    // Pass setToken to LoginPage so it can update token after login
-    return <LoginPage setToken={setToken} />;
-  }
+  // if (!token) {
+  //   // Pass setToken to LoginPage so it can update token after login
+  //   return <LoginPage setToken={setToken} />;
+  // }
 
   return (
     <div className="wrapper">
       <Routes>
-        {/* Pass setToken to ProfilePage for logout */}
-        <Route path="/profile/:userId" element={<ProfilePage setToken={setToken} user={user}/>} />
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
-        <Route path="/dashboard/:userId" element={<DashboardPage user={user}/>} />
-        <Route path="/dashboard/addExpense/:userId" element={<AddExpendsPage user={user}/>} />
-        <Route path="/dashboard/addIncome/:userId" element={<AddIncomePage user={user}/>} />
-        <Route path="/transactions/:transactionId" element={<ExpenseInfoPage user={user}/>} />
+        <Route path="/register" element={<RegisterPage setToken={setToken}/>} />
+        <Route path="/verify/:token" element={<VerifyEmailPage />} />
+        {/* Protected routes */}
+        <Route
+          path="/profile/:userId"
+          element={token ? <ProfilePage setToken={setToken} user={user}/> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/dashboard/:userId"
+          element={token ? <DashboardPage user={user}/> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/dashboard/addExpense/:userId"
+          element={token ? <AddExpendsPage user={user}/> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/dashboard/addIncome/:userId"
+          element={token ? <AddIncomePage user={user}/> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/transactions/:transactionId"
+          element={token ? <ExpenseInfoPage user={user}/> : <Navigate to="/login" replace />}
+        />
+
+        {/* Default route */}
         <Route
           path="/"
-          element={<Navigate to={`/dashboard/${localStorage.getItem("username")}`} replace />}
+          element={
+            token
+              ? <Navigate to={`/dashboard/${localStorage.getItem("username")}`} replace />
+              : <Navigate to="/login" replace />
+          }
         />
       </Routes>
     </div>

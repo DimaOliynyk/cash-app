@@ -21,33 +21,47 @@ class AddIncomePage extends Component{
         this.state = {
             amount: 0,
             name: "",
-            description: "",
             selectedCategory: "",
+            user: {},
+            description: ""
         };
     }
 
     handleExpense = async e => {
         e.preventDefault();
-        if (this.state.selectedCategory === null) {
-            return alert('Choose a category!');
-        }
         const { amount, name, selectedCategory, user, description } = this.state;
-        console.log(this.state)
-        // Call your API function to create the expense
-        const expense = await addIncomeRequest({
-            amount,
-            name,
-            description,
-            category: selectedCategory,
-        });
+        
+        const validations = [
+            { valid: !!selectedCategory, message: "You need to choose a category!" },
+            { valid: !!name.trim(), message: "Enter an income name!" },
+            { valid: amount > 0, message: "Enter a valid amount greater than 0!" },
+            { valid: !!description.trim(), message: "Enter a description!" },
+        ];
 
-        if (expense && expense.createdAt) {
-            // Navigate programmatically after creation
-            this.props.navigate(`/dashboard/${user}`);
-        } else {
-            alert('Failed to create expense.');
+        // Find the first failed validation
+        const failed = validations.find(v => !v.valid);
+        if (failed) {
+            alert(failed.message);
+            return;
         }
-    } 
+
+
+        try {
+            const expense = await addIncomeRequest({
+                amount,
+                name,
+                selectedCategory,
+                description
+            });
+
+            if (expense.createdAt) {
+            this.props.navigate(`/dashboard/${user.username}`);
+            }
+        } catch (error) {
+            console.error("Error adding expense:", error);
+            alert("An error occurred while adding the expense.");
+        }
+    }; 
 
     setAmount = async e => {
         this.setState({amount: e.target.value})
@@ -105,11 +119,14 @@ class AddIncomePage extends Component{
                                 className="expense-input"
                             >
                                 <option value="" disabled>Select Category</option>
-                                {categories && categories.map(el => (
-                                <option key={el._id} value={el._id}>
+                                {categories && categories
+                                .filter(el => el.name === 'Work')
+                                .map(el => (
+                                    <option key={el._id} value={el._id}>
                                     {el.name}
-                                </option>
-                                ))}
+                                    </option>
+                                ))
+                                }
                             </select>
                             {/* <input type="text" placeholder="Description" onChange={e => this.setDesctiption(e)} className="expense-input" /> */}
 

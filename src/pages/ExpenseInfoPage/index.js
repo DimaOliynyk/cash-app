@@ -22,37 +22,34 @@ class ExpenseInfoPage extends Component {
   }
 
   componentDidMount = async () => {
-    const urlParts = window.location.pathname.split('/');
-    const transactionId = urlParts[urlParts.length - 1]; // last part of path
-    this.setState({ transactionId });
-
+  
   };
-
+  
   handleDelete = async () => {
-    const { transactionId } = this.state;
-
-    await deleteTransaction(transactionId);
+    const { expense } = this.props.location.state || {};
+    const id = expense._id
+    await deleteTransaction({ id });
 
     // Go back to the previous page using browser history
     window.history.back();
-
+    
   };
 
   render() {
     if (!this.props.user) {
       return <p>Loading...</p>; // user not fetched yet
     }
-
+    
     if (!this.props.location?.state?.expense) {
       return <p>No expense data found.</p>;
     }
-
+    
     const { user } = this.props.user;
     const { expense } = this.props.location.state || {};
-
+    // this.setState({transaction: expense})
     const { username } = user
-    const { name, amount, category, description  } = expense;
-    console.log(this.state.transaction)
+    const { name, amount, category, description } = expense;
+    console.log(expense)
     if (!this.state.transaction) {
         return null; // or a loading indicator/spinner if needed
     }
