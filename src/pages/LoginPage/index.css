@@ -50,8 +50,10 @@
 .heading-LoginPage {
   font-weight: 700;
   margin-bottom: 20px;
-  color: #FF4B2B;
+  color: linear-gradient(135deg, #6a0dad, #2c3e50, #1b2631);
   font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .socialContainer-LoginPage {
@@ -109,8 +111,7 @@
 
 .button-LoginPage {
   border-radius: 20px;
-  border: 1px solid #FF4B2B;
-  background-color: #FF4B2B;
+  background: linear-gradient(135deg, #6a0dad, #2c3e50, #1b2631);
   color: #FFFFFF;
   font-size: 14px;
   font-weight: bold;

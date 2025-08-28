@@ -2,6 +2,7 @@ import {React, Component} from 'react';
 import { NavLink } from "react-router-dom";
 
 import './index.css'
+import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 
 import arrowDown from '../../images/arrow-down.png';
 import arrowUp from '../../images/arrow-up.png';
@@ -10,7 +11,8 @@ import LoginPage from '../LoginPage/index';
 
 import ExpensesLineChart from '../../components/ExpensesLineChart';
 
-import { fetchExpenses } from '../../api';
+import { fetchExpenses, getUser } from '../../api';
+import Footer from '../../components/Footer';
 
 
 
@@ -18,16 +20,17 @@ export default class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
+      user: undefined,
       expenses: [],
       currentPage: 1,
-      pageSize: 7,
+      pageSize: 4,
     };
   }
 
   componentDidMount = async () => {
     const expenses = (await fetchExpenses()).reverse();
-    this.setState({ expenses });
+    const user = await getUser();
+    this.setState({ expenses, user });
   };
 
   handlePrevPage  = () => {
@@ -37,7 +40,6 @@ export default class DashboardPage extends Component {
   };
 
   handleNextPage  = () => {
-  console.log("Next clicked", this.state.expenses?.length, this.state.pageSize);
   this.setState((prevState) => {
     const maxPage = Math.ceil(prevState.expenses.length / prevState.pageSize);
     return {
@@ -71,15 +73,12 @@ export default class DashboardPage extends Component {
   };
 
   render() {
-    if (!this.props.user) {
+    if (!this.state.user) {
       return <p>Loading...</p>; // user not fetched yet
     }
-    
-    const { user } = this.props.user;
 
-    const { username, avatarUrl, balance, totalIncome, totalSpend } = user;
+    const { username, avatarUrl, balance, totalIncome, totalSpend } = this.state.user.user;
       const { expenses, currentPage, pageSize } = this.state;
-      
       // Calculate which expenses to show on current page
       const startIndex = (currentPage - 1) * pageSize;
       const currentExpenses = expenses.slice(startIndex, startIndex + pageSize)
@@ -103,36 +102,47 @@ export default class DashboardPage extends Component {
           <main className="dashboardPage-main">
             <div className="dashboardPage-container">
               <div className="dashboardPage-money-total">
-                <p>Your total balance</p>
-                <h3 className="dashboardPage-money-total-balance">${balance}</h3>
+                <div className="dashboardPage-money-total-balance-wrapper">
+                  <p>Total Balance</p>
+                  <h3 className="dashboardPage-money-total-balance">${balance}</h3>
+                </div>
 
                 <div className="dashboardPage-money-total-incomes">
                   <div className="dashboardPage-money-total-income">
-                    <img src={arrowUp} alt="Income arrow" />
                     <div>
-                      <p>Income</p>
-                      <p>${totalIncome}</p>
+                      <ArrowDownCircle size={18} />
+                      <span className="text-sm">Income</span>
                     </div>
+                    <p className="text-lg font-medium">${totalIncome}</p>
                   </div>
                   <div className="dashboardPage-money-total-spend">
-                    <img src={arrowDown} alt="Spend arrow" />
                     <div>
-                      <p>Spend</p>
-                      <p>${totalSpend}</p>
+                      <ArrowUpCircle size={18} />
+                      <span className="text-sm">Expenses</span>
                     </div>
+                    <p className="text-lg font-medium">${totalSpend}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {chartData && chartData.length > 0 && chartData.some(item => item.value !== 0) && (
+{/* <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+  <line x1="6" y1="18" x2="6" y2="10" /> 
+  <line x1="12" y1="18" x2="12" y2="6" /> 
+  <line x1="18" y1="18" x2="18" y2="4" /> 
+</svg> */}
+            {/* {chartData && chartData.length > 0 && chartData.some(item => item.value !== 0) && (
               <div className="dashboardPage-chart-container">
                 <ExpensesLineChart data={chartData} />
               </div>
-            )}
+            )} */}
 
             <div className="dashboardPage-spends">
-              <p className="spend-recent">Recent</p>
+              <div className="row">
+                <p className="spend-recent">Transactions</p>
+                <NavLink to="#" className="see-all-transactions">See All</NavLink>
+              </div>
+
               <div className="dashboardPage-spends-list">
                 {currentExpenses.map((expense) => (
                   <NavLink
@@ -143,11 +153,11 @@ export default class DashboardPage extends Component {
                     style={{ textDecoration: 'none', color: 'inherit' }}
                   >
                     {/* Show the category icon if exists, else fallback to blackImage */}
-                    <img
-                      src={expense.category?.iconUrl || blackImage}
+                    {/* <img
+                      src={expense.category?.iconUrl}
                       alt={expense.category?.name || "expense icon"}
                       style={{ width: 24, height: 24 }}
-                    />
+                    /> */}
                     <div>
                       <p className="spend-name">{expense.name || 'Unnamed'}</p>
                       <p className="spend-date">
@@ -177,18 +187,10 @@ export default class DashboardPage extends Component {
                   Next
                 </button>
               </div>
-
-              <div className="dashboardPage-spends-buttons">
-                <NavLink to={`/dashboard/addExpense/${username}`} className="circle-button">
-                  -
-                </NavLink>
-
-                <NavLink to={`/dashboard/addIncome/${username}`} className="circle-button">
-                  +
-                </NavLink>
-              </div>
             </div>
           </main>
+
+          <Footer user={this.state.user}/>
         </>
       );
   }

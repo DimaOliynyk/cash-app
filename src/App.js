@@ -14,6 +14,8 @@ import ProfilePage from './pages/ProfilePage';
 import ExpenseInfoPage from './pages/ExpenseInfoPage';
 import RegisterPage from './pages/RegisterPage';
 import VerifyEmailPage from './pages/VerifyEmailPage';
+import OverviewPage from './pages/OverviewPage';
+import InProgressPage from './pages/InProgressPage';
 
 // const getUser = ({ token, children }) => {
 //   return token ? children : <Navigate to="/login" replace />;
@@ -50,6 +52,7 @@ function App() {
         <Route path="/login" element={<LoginPage setToken={setToken} />} />
         <Route path="/register" element={<RegisterPage setToken={setToken}/>} />
         <Route path="/verify/:token" element={<VerifyEmailPage />} />
+
         {/* Protected routes */}
         <Route
           path="/profile/:userId"
@@ -71,7 +74,14 @@ function App() {
           path="/transactions/:transactionId"
           element={token ? <ExpenseInfoPage user={user}/> : <Navigate to="/login" replace />}
         />
-
+        <Route
+          path="/overview/:userId"
+          element={token ? <OverviewPage user={user}/> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/inprogress"
+          element={token ? <InProgressPage user={user}/> : <Navigate to="/login" replace />}
+        />
         {/* Default route */}
         <Route
           path="/"

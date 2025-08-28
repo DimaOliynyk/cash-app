@@ -5,6 +5,7 @@ import { addExpenseRequest } from '../../api';
 
 import './index.css' // css styling
 
+import Footer from '../../components/Footer';
 
 function withRouter(Component) {
   return function(props) {
@@ -64,11 +65,6 @@ class AddExpendsPage extends Component{
 
         return(
             <>
-                {/* Navigation link back to dashboard */}
-                <NavLink to={`/dashboard/${username}`} className="nav-back-button">         
-                    ← Back
-                </NavLink>
-
                 {/* Page header */}
                 <header className='AddExpendsPage-header'>
                     <h2>New Expense</h2>
@@ -105,6 +101,7 @@ class AddExpendsPage extends Component{
                         </form>
                 </main>
 
+                <Footer user={this.props.user} />
                 {/* Footer could be added here */}
             </>
         )
