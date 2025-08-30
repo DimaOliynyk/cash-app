@@ -12,7 +12,7 @@
 
 .DashboardPage-header-greetings {
     font-size: 20px;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-bottom: 0;
 }
 
@@ -20,7 +20,7 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    margin-top: 15px;
+    margin-top: 0;
 }
 
 .dashboardPage-main{
@@ -368,6 +368,7 @@
       align-items: center;
       height: 70px;
       padding: 0 20px;
+      padding-bottom: 10px;
       z-index: 10;
     }
 

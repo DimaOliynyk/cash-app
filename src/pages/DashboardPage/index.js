@@ -1,6 +1,9 @@
 import {React, Component} from 'react';
 import { NavLink } from "react-router-dom";
 
+import { connect } from "react-redux";
+import { fetchUser } from "../../redux/userSlice"; // путь к userSlice.js
+
 import './index.css'
 import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 
@@ -16,7 +19,7 @@ import Footer from '../../components/Footer';
 
 
 
-export default class DashboardPage extends Component {
+class DashboardPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +33,7 @@ export default class DashboardPage extends Component {
   componentDidMount = async () => {
     const expenses = (await fetchExpenses()).reverse();
     const user = await getUser();
+    this.props.fetchUser();
     this.setState({ expenses, user });
   };
 
@@ -73,21 +77,24 @@ export default class DashboardPage extends Component {
   };
 
   render() {
-    if (!this.state.user) {
-      return <p>Loading...</p>; // user not fetched yet
-    }
+    const { user, loading, error } = this.props;
 
-    const { username, avatarUrl, balance, totalIncome, totalSpend } = this.state.user.user;
-      const { expenses, currentPage, pageSize } = this.state;
-      // Calculate which expenses to show on current page
-      const startIndex = (currentPage - 1) * pageSize;
-      const currentExpenses = expenses.slice(startIndex, startIndex + pageSize)
+    if (loading) return <div>Загрузка...</div>;
+    if (error) return <div>Ошибка: {error}</div>;
+    if (!user) return null;
+
+    const { username, avatarUrl, balance, totalIncome, totalSpend } = user;
+    const { expenses, currentPage, pageSize } = this.state;
       
-      const chartData = this.getChartData();
-      let totalPages = Math.ceil(expenses.length / pageSize);
-      if(totalPages === 0){
-        totalPages = 1
-      }
+    // Calculate which expenses to show on current page
+    const startIndex = (currentPage - 1) * pageSize;
+    const currentExpenses = expenses.slice(startIndex, startIndex + pageSize)
+
+    // const chartData = this.getChartData();
+    let totalPages = Math.ceil(expenses.length / pageSize);
+    if(totalPages === 0){
+      totalPages = 1
+    }
 
 
       return (
@@ -195,3 +202,18 @@ export default class DashboardPage extends Component {
       );
   }
 }
+
+// Мапим стейт Redux в пропсы
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+  loading: state.user.loading,
+  error: state.user.error,
+});
+
+// Мапим экшены в пропсы
+const mapDispatchToProps = {
+  fetchUser,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
