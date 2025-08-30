@@ -1,13 +1,14 @@
 {
   "files": {
     "main.css": "/cash-app/static/css/main.7f88e4c8.css",
-    "main.js": "/cash-app/static/js/main.f2ba4de5.js",
+    "main.js": "/cash-app/static/js/main.b5c1dae6.js",
+    "service-worker.js": "/cash-app/service-worker.js",
     "index.html": "/cash-app/index.html",
     "main.7f88e4c8.css.map": "/cash-app/static/css/main.7f88e4c8.css.map",
-    "main.f2ba4de5.js.map": "/cash-app/static/js/main.f2ba4de5.js.map"
+    "main.b5c1dae6.js.map": "/cash-app/static/js/main.b5c1dae6.js.map"
   },
   "entrypoints": [
     "static/css/main.7f88e4c8.css",
-    "static/js/main.f2ba4de5.js"
+    "static/js/main.b5c1dae6.js"
   ]
 }
