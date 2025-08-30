@@ -1,9 +1,10 @@
 import axios from "axios";
 
 // Base URL
-const API_BASE_URL = 'http://192.168.0.247:3000/api';
+const API_BASE_URL = 'https://cash-app-server-cydp.onrender.com/api';
 
-// https://cash-app-server-cydp.onrender.com
+//  https://cash-app-server-cydp.onrender.com
+//  http://192.168.0.90:3000
 export const loginUser = async ({ username, password }) => {
   try {
     const response = await axios.post(
@@ -125,6 +126,24 @@ export const getTransaction = async () => {
   }
 };
 
+export const loadCashflow = async () => {
+  try {
+
+    const response = await axios.get(
+      `${API_BASE_URL}/transactions/cashflow`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Getting transactions failed:", error.response || error.message);
+    throw error;
+  }
+};
 
 export const deleteTransaction = async ({ id }) => {
   try {

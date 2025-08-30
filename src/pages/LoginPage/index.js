@@ -39,13 +39,15 @@ export default function LoginPage({ setToken }) {
 
       try {
         const tokenData = await loginUser({ username, password });
-        localStorage.setItem("token", tokenData.token);
         // Save token and username in localStorage
-
-        setToken(tokenData.token);
-
-        // Navigate to dashboard
-        navigate(`/dashboard/${tokenData.user.username}`);
+        if(!tokenData.token){
+          alert('Wrong credentials!')
+        } else{
+          setToken(tokenData.token);
+          localStorage.setItem("token", tokenData.token);
+          // Navigate to dashboard
+          navigate(`/dashboard/${tokenData.user.username}`);
+        }
       } catch (err) {
         alert('Login failed. Please check your credentials.');
         console.error('Login error:', err);

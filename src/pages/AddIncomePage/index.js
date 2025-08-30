@@ -7,6 +7,7 @@ import { addIncomeRequest } from '../../api';
 
 import './index.css'
 
+import Footer from '../../components/Footer';
 
 function withRouter(Component) {
   return function(props) {
@@ -55,11 +56,10 @@ class AddIncomePage extends Component{
             });
 
             if (expense.createdAt) {
-            this.props.navigate(`/dashboard/${user.username}`);
+                this.props.navigate(`/dashboard/${user.username}`);
             }
         } catch (error) {
-            console.error("Error adding expense:", error);
-            alert("An error occurred while adding the expense.");
+            alert(error.response.data);
         }
     }; 
 
@@ -87,9 +87,6 @@ class AddIncomePage extends Component{
 
         return(
             <>
-                <NavLink to={`/dashboard/${username}`} className="nav-back-button">         
-                    ← Back
-                </NavLink>
                 <header className='AddExpendsPage-header'>
                     <h2>New Income</h2>
                 </header>
@@ -135,6 +132,8 @@ class AddIncomePage extends Component{
                             </button>
                         </form>
                 </main>
+
+                <Footer user={this.props.user} />
                 {/* footer to add!! */}
             </>
         )

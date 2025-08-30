@@ -12,7 +12,7 @@
 
 .DashboardPage-header-greetings {
     font-size: 20px;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-bottom: 0;
 }
 
@@ -20,7 +20,7 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    margin-top: 15px;
+    margin-top: 0;
 }
 
 .dashboardPage-main{
@@ -42,88 +42,140 @@
     width: 360px;
     height: 175px;
 
-    background-color: black;
-    border-radius: 5px;
-
-    text-align: center;
+    background: linear-gradient(135deg, #8e44ad, #2c3e50, #34495e);
+     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
     color: white;
 }
 
 .dashboardPage-money-total p{
-    color:gray;
-
     font-size: 12px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
     padding-top: 15px;
+}
+
+.dashboardPage-money-total-balance-wrapper{
+    margin-left: 30px;
+}
+
+.dashboardPage-money-total-balance-wrapper p{
+    color: white;
+    margin-bottom: 0;
 }
 
 .dashboardPage-money-total-balance{
     color:white;
 
-    font-size: 40px;
+    font-size: 25px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
     padding-top: 0;
-    margin-top: 0;
+    margin-top: 5px;
     margin-bottom: 15px;
 }
+
+
+
 
 .dashboardPage-money-total-incomes{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    margin-top: 35px;
 }
+
+.dashboardPage-money-total-incomes p{
+    margin-top: 5px;
+    padding-top: 0;
+    color: white;
+
+    font-size: 18px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+
 
 .dashboardPage-money-total-income{
-    width: 50%;
+    width: 100px;
     height: 50px;
-    display: flex;
-    flex-direction: row;
-}
-
-.dashboardPage-money-total-spend{
-    width: 50%;
-
-    display: flex;
-    flex-direction: row;
-}
-
-.dashboardPage-money-total-incomes div{
-    margin-left: 40px;
-}
-
-.dashboardPage-money-total-incomes div div{
     display: flex;
     flex-direction: column;
 
-    margin-left: 10px;
+    margin-left: 30px;
 }
 
-.dashboardPage-money-total-incomes div div p{
-    margin: 0;
-    padding-top: 5px;
-}
-
-.dashboardPage-money-total-incomes div img{
-    width: 30px;
+.dashboardPage-money-total-income div{
+    width: 80px;
     height: 50px;
-
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
+
+
+
+
+
+.dashboardPage-money-total-spend{
+    width: 100px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    
+    margin-right: 30px;
+}
+
+.dashboardPage-money-total-spend div{
+    width: 95px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+
+
+
+.text-sm{
+    font-size: 14px;
+    margin-top: 1px;
+}
+
+
+
+
+
+
+
 
 .dashboardPage-spends{
     margin-top: 50px;
 }
 
 .spend-recent{
-    margin-left: 20px;
+    margin-left: 17px;
     margin-bottom: 0;
-    margin-top: 20px;
+    margin-top: 0px;
 
     font-size: 20px;
     font-family: "Raleway", sans-serif;
     font-weight: 600;
 }
 
+.see-all-transactions{
+    opacity: 0.4;
+    color: black;
+
+    font-size: 16px;
+    text-decoration: none;
+
+    margin-right: 15px;
+    margin-top: 5px;
+}
 
 .dashboardPage-spends-list {
     margin-top: 30px;
@@ -217,8 +269,15 @@
 }
 
 .dashboardPage-spends-buttons {
+
+    
+    
+    
+    
+    
+    
     position: fixed;
-    bottom: 10px;
+    bottom: 45px;
     left: 50%;                 /* move to 50% from the left */
     transform: translateX(-50%); /* shift back by half its width */
     width: 390px;
@@ -238,20 +297,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;         /* Adjust size */
-  height: 50px;
+  width: 55px;         /* Adjust size */
+  height: 55px;
   border-radius: 50%;  /* Makes it circular */
-  background-color: #4b4b4b; /* Any color you like */
+  background: linear-gradient(135deg, #6a0dad, #2c3e50, #1b2631);
   color: white;
   font-size: 24px;
   text-decoration: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
   border: none;
-}
-
-.circle-button:hover {
-  background-color: #4b4b4b;
 }
 
 .minimal-chart-container {
@@ -298,3 +353,52 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
+
+.footer-dashboard {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+       width: calc(100% - 40px);
+      background: white;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 70px;
+      padding: 0 20px;
+      padding-bottom: 10px;
+      z-index: 10;
+    }
+
+    .footer-dashboard .icon {
+      flex: 1;
+      text-align: center;
+      color: #aaa;
+      font-size: 30px;
+    }
+
+    .footer-dashboard .icon.active {
+      color: #8B5CF6; /* purple highlight */
+    }
+
+    .fab {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 55px;
+      height: 55px;
+    z-index: 100;   
+      background: linear-gradient(135deg, #9b59b6, #34495e, #1abc9c);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 28px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      cursor: pointer;
+      border: 0;
+    }

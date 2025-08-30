@@ -1,6 +1,17 @@
 body{
   margin: 0;
 }
+
+.row{
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+}
+
+a{
+  text-decoration: none;
+}
 .App {
   text-align: center;
 }
