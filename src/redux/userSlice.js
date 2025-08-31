@@ -22,7 +22,29 @@ const userSlice = createSlice({
   reducers: {
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
+    },
+    addExpenseToUser: (state, action) => {
+      
+    const expense = action.payload;
+     if (state.user?.expenses) {
+       state.user.expenses.unshift(action.payload); // добавляем новую трату
+       
+     } else {
+       state.user.expenses = [action.payload];
+     }
+
+      // 2️⃣ обновляем баланс и траты
+    if (expense.type === '+') {
+      // если это доход
+      state.user.balance += expense.amount;
+      state.user.totalIncome += expense.amount;
+    } else {
+      // если это расход
+      state.user.balance -= expense.amount;
+      state.user.totalSpend += expense.amount;
+      state.user.spendThisMonth = (state.user.spendThisMonth || 0) + expense.amount;
     }
+   }
   },
   extraReducers: (builder) => {
     builder
@@ -38,5 +60,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateUser } = userSlice.actions;
+export const { updateUser, addExpenseToUser } = userSlice.actions;
 export default userSlice.reducer;

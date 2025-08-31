@@ -1,41 +1,60 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { addExpenseToUser, fetchUser } from "../../redux/userSlice";
+import { loadCashflow, getUser } from '../../api';
+
 import Footer from '../../components/Footer';
 import { PieChart, Pie, Cell, Tooltip, LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
-
-import { loadCashflow, getUser } from '../../api';
 
 import './index.css'; // import your CSS file
 
 
 const COLORS = ["#4ade80", "#f87171", "#60a5fa", "#facc15", "#a78bfa"];
 
-export default class OverviewPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            cashflowData: null,
-            user: null
-        };
-    }
+function withRouter(Component) {
+  return function(props) {
+    const navigate = useNavigate();
+    return <Component {...props} navigate={navigate} />;
+  };
+}
 
-    componentDidMount = async () => {
-        const cashFlow = await loadCashflow();
-        const user = await getUser();
+class OverviewPage extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+          cashflowData: null,
+          user: null
+      };
+  }
 
-        this.setState({ cashFlow, user });
-    };
+  componentDidMount = async () => {
+      const cashFlow = await loadCashflow();
+      const user = await getUser();
+
+      this.setState({ cashFlow, user });
+  };
 
   render() {
-    if (!this.state.user) return <p>Loading...</p>;
+    if (!this.props.user) return <p>Loading...</p>;
     
-    const { incomeThisMonth, spendThisMonth, balance } = this.state.user.user
+    const { user } = this.props;
+    const { incomeThisMonth, spendThisMonth, balance } = user;
 
     const incomeExpenseData = [
-        { name: "Income", value: incomeThisMonth },
-        { name: "Expenses", value: Math.abs(spendThisMonth) },
+      { name: "Income", value: incomeThisMonth },
+      { name: "Expenses", value: Math.abs(spendThisMonth) },
     ];
+
+    let progress = 0;
     
-    const progress = Math.min((balance / 500) * 100, 100); // процент, максимум 100%
+    if(balance < 0){
+      progress = 0
+    } else{
+      progress = Math.min((balance / 500) * 100, 100); // процент, максимум 100%
+    }
+    
     return (
       <div className="overview-container">
         {/* Header Summary */}
@@ -136,3 +155,11 @@ export default class OverviewPage extends Component {
     );
   }
 }
+
+
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+
+export default connect(mapStateToProps)(withRouter(OverviewPage));

@@ -13,64 +13,55 @@ export default class Footer extends Component{
         this.setState((prev) => ({ open: !prev.open }));
     };
 
-    render(){
-        if (!this.props.user) {
-            return <p>Loading...</p>; // user not fetched yet
+    render() {
+        const { user } = this.props;
+        console.log(user)
+        if (!user) {
+            return (
+                <div className="footer-dashboard">
+                    <div className="icon active">
+                        <NavLink to='#'>🏠</NavLink>
+                    </div>
+                    <div className="icon active">
+                        <NavLink to='#'>📊</NavLink>
+                    </div>
+                    <button onClick={this.toggleMenu} className="fab">+</button>
+                    <div className="icon">
+                        <NavLink to='#'>💳</NavLink>
+                    </div>
+                    <div className="icon">
+                        <NavLink to='#'>👤</NavLink>
+                    </div>
+                </div>
+            );
         } else {
-            const { user } = this.props.user;
-    
             const { username, avatarUrl, balance, totalIncome, totalSpend } = user;
-            return(
+            return (
                 <>
                     <div className="footer-dashboard">
                         <div className="icon active">
-                            <NavLink to={`/dashboard/${username}`}>
-                                🏠
-                            </NavLink>
+                            <NavLink to={`/dashboard/${username}`}>🏠</NavLink>
                         </div>
                         <div className="icon active">
-                            <NavLink to={`/overview/${username}`}>
-                                📊
-                            </NavLink>
+                            <NavLink to={`/overview/${username}`} >📊</NavLink>
                         </div>
-                        <button
-                            onClick={this.toggleMenu}
-                            className="fab"
-                        >
-                            +
-                        </button>
+                        <button onClick={this.toggleMenu} className="fab">+</button>
                         <div className="icon">
-                            <NavLink to={`/inprogress`}>
-                                💳
-                            </NavLink>
+                            <NavLink to={`/inprogress`}>💳</NavLink>
                         </div>
                         <div className="icon">
-                            <NavLink to={`/profile/${username}`}>
-                                👤
-                            </NavLink>
+                            <NavLink to={`/profile/${username}`}>👤</NavLink>
                         </div>
                     </div>
 
-                     {this.state.open && (
+                    {this.state.open && (
                         <div className="dashboardPage-spends-buttons">
-                            <NavLink
-                            to={`/dashboard/addExpense/${username}`}
-                            className="circle-button"
-                            >
-                            -
-                            </NavLink>
-
-                            <NavLink
-                            to={`/dashboard/addIncome/${username}`}
-                            className="circle-button"
-                            >
-                            +
-                            </NavLink>
+                            <NavLink to={`/dashboard/addExpense/${username}`} className="circle-button">-</NavLink>
+                            <NavLink to={`/dashboard/addIncome/${username}`} className="circle-button">+</NavLink>
                         </div>
                     )}
                 </>
-            )
+            );
         }
-        
-    }
+    }   
 }

@@ -9,6 +9,11 @@ body{
   justify-content: space-between;
 }
 
+.column{
+  display: flex;
+  flex-direction: column;
+}
+
 a{
   text-decoration: none;
 }

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from "react-router";
 import { Navigate } from "react-router-dom";
-import './App.css';
 
 import { getUser } from './api';
 
-import HomePage from './pages/GetStartedPage/index';
 import LoginPage from './pages/LoginPage/index';
 import DashboardPage from './pages/DashboardPage/index';
 import AddExpendsPage from './pages/AddExpendsPage';
@@ -17,9 +15,8 @@ import VerifyEmailPage from './pages/VerifyEmailPage';
 import OverviewPage from './pages/OverviewPage';
 import InProgressPage from './pages/InProgressPage';
 
-// const getUser = ({ token, children }) => {
-//   return token ? children : <Navigate to="/login" replace />;
-// };
+import './App.css';
+
 
 function App() {
   // localStorage.clear()
@@ -40,11 +37,6 @@ function App() {
     };
     fetchUser();
   }, [token]);
-
-  // if (!token) {
-  //   // Pass setToken to LoginPage so it can update token after login
-  //   return <LoginPage setToken={setToken} />;
-  // }
 
   return (
     <div className="wrapper">
@@ -82,6 +74,7 @@ function App() {
           path="/inprogress"
           element={token ? <InProgressPage user={user}/> : <Navigate to="/login" replace />}
         />
+        
         {/* Default route */}
         <Route
           path="/"

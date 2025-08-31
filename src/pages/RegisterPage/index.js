@@ -1,53 +1,55 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink} from 'react-router-dom';
+
+import { registerUser } from '../../api';
 
 import PropTypes from 'prop-types';
-import { registerUser } from '../../api';
-import { NavLink } from "react-router-dom";
+
 
 export default function RegisterPage({ setToken }) {
-    const [email, setEmail] = useState('');
-    const [username, setUserName] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstname] = useState('');
-    const [lastName, setLastname] = useState('');
+  const [email, setEmail] = useState('');
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
 
-    const [error, setError] = useState(''); // For error message
-    const navigate = useNavigate();
-    const handleSubmit = async e => {
-        e.preventDefault();
+  const [error, setError] = useState(''); // For error message
+  const navigate = useNavigate();
 
-      if ((!username || !username.trim()) && (!password || !password.trim())) {
-        alert('Please enter your username and password.');
-        return;
-      }
-      if (!username || !username.trim()) {
-        alert('Please enter your username.');
-        return;
-      }
-      if (!password || !password.trim()) {
-        alert('Please enter your password.');
-        return;
-      }
+  const handleSubmit = async e => {
+    e.preventDefault();
 
-      setError(''); // Clear any previous errors
+    if ((!username || !username.trim()) && (!password || !password.trim())) {
+      alert('Please enter your username and password.');
+      return;
+    }
+    if (!username || !username.trim()) {
+      alert('Please enter your username.');
+      return;
+    }
+    if (!password || !password.trim()) {
+      alert('Please enter your password.');
+      return;
+    }
 
-      try {
-        console.log(firstName, lastName, email)
-        const tokenData = await registerUser({ email, username, password, firstName, lastName });
-        localStorage.setItem("token", tokenData.token);
-        // Save token and username in localStorage
+    setError(''); // Clear any previous errors
 
-        setToken(tokenData.token);
+    try {
+      console.log(firstName, lastName, email)
+      const tokenData = await registerUser({ email, username, password, firstName, lastName });
+      localStorage.setItem("token", tokenData.token);
+      // Save token and username in localStorage
 
-        // Navigate to dashboard
-        navigate(`/dashboard/${tokenData.user.username}`);
-      } catch (err) {
-        alert('Login failed. Please check your credentials.');
-        console.error('Login error:', err);
-        setError('Login failed. Please check your credentials.');
-      }
-    } 
+      setToken(tokenData.token);
+
+      // Navigate to dashboard
+      navigate(`/dashboard/${tokenData.user.username}`);
+    } catch (err) {
+      alert('Login failed. Please check your credentials.');
+      console.error('Login error:', err);
+      setError('Login failed. Please check your credentials.');
+    }
+  } 
 
   return (
     <div className="signInUpRoot-LoginPage">
@@ -84,7 +86,6 @@ export default function RegisterPage({ setToken }) {
     </div>
   );
 }
-
 
 RegisterPage.propTypes = {
   setToken: PropTypes.func.isRequired

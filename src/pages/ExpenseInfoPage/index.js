@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { NavLink, useLocation } from "react-router-dom";
 
 import { deleteTransaction } from '../../api';
@@ -20,10 +20,6 @@ class ExpenseInfoPage extends Component {
       transactionId: null,
     };
   }
-
-  componentDidMount = async () => {
-  
-  };
   
   handleDelete = async () => {
     const { expense } = this.props.location.state || {};
@@ -32,7 +28,6 @@ class ExpenseInfoPage extends Component {
 
     // Go back to the previous page using browser history
     window.history.back();
-    
   };
 
   render() {
@@ -45,36 +40,36 @@ class ExpenseInfoPage extends Component {
     }
     
     const { user } = this.props.user;
-    const { expense } = this.props.location.state || {};
-    // this.setState({transaction: expense})
     const { username } = user
+
+    const { expense } = this.props.location.state || {};
     const { name, amount, category, description } = expense;
-    console.log(expense)
+
     if (!this.state.transaction) {
-        return null; // or a loading indicator/spinner if needed
+        return null; 
     }
 
     return (
       <>
-      <div className='expense-info-wrapper'>
-        <NavLink to={`/dashboard/${username}`} className="nav-back-button">
-          ← Back
-        </NavLink>
-        <div className='expense-info'>
-            <p>name: {name}</p>
-            <p>amount: {amount}$</p>
-            <p>{description}</p>
-            <div className='expense-info-category'>
-                <p>
-                    {category?.iconUrl && (
-                    <img src={category.iconUrl} alt={category.name} />
-                    )}
-                </p>
-                <p>{category?.name}</p>
-            </div>
-            <button onClick={this.handleDelete}>Delete</button>
+        <div className='expense-info-wrapper'>
+          <NavLink to={`/dashboard/${username}`} className="nav-back-button">
+            ← Back
+          </NavLink>
+          <div className='expense-info'>
+              <p>name: {name}</p>
+              <p>amount: {amount}$</p>
+              <p>{description}</p>
+              <div className='expense-info-category'>
+                  <p>
+                      {category?.iconUrl && (
+                      <img src={category.iconUrl} alt={category.name} />
+                      )}
+                  </p>
+                  <p>{category?.name}</p>
+              </div>
+              <button onClick={this.handleDelete}>Delete</button>
+          </div>
         </div>
-      </div>
       </>
     );
   }

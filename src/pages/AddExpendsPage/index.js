@@ -1,11 +1,16 @@
 import { Component } from 'react';
+import { connect } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+
+import { fetchUser } from "../../redux/userSlice";
+import { addExpenseToUser } from "../../redux/userSlice";
 
 import { addExpenseRequest } from '../../api';
 
+import Footer from '../../components/Footer';
+
 import './index.css' // css styling
 
-import Footer from '../../components/Footer';
 
 function withRouter(Component) {
   return function(props) {
@@ -26,6 +31,11 @@ class AddExpendsPage extends Component{
         };
     }
 
+    componentDidMount() {
+        if (!this.props.user) {
+        this.props.fetchUser(); // Loading user
+        }
+    }
     // Handle form submission to add a new expense
     handleExpense = async e => {
         e.preventDefault();
@@ -40,8 +50,10 @@ class AddExpendsPage extends Component{
         });
         console.log(description)
         if(expense.createdAt) {
+            this.props.addExpenseToUser(expense);
+
             // Navigate to user dashboard if expense is successfully created
-            this.props.navigate(`/dashboard/${this.state.user.username}`); 
+            this.props.navigate(`/dashboard/${this.props.user.username}`); 
         }
     } 
 
@@ -56,12 +68,11 @@ class AddExpendsPage extends Component{
 
 
     render(){   
-        if (!this.props.user) {
-            return <p>Loading...</p>; // user not fetched yet
-        }
-    
-        const { user } = this.props.user;
-        const { username } = user
+        const { user, loading, error } = this.props;
+
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Error: {error}</p>;
+        if (!user) return <p>No user</p>;
 
         return(
             <>
@@ -101,11 +112,21 @@ class AddExpendsPage extends Component{
                         </form>
                 </main>
 
-                <Footer user={this.props.user} />
+                <Footer user={user} />
                 {/* Footer could be added here */}
             </>
         )
     }
 }
 
-export default withRouter(AddExpendsPage);
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+const mapDispatchToProps = {
+    fetchUser,
+    addExpenseToUser,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddExpendsPage));

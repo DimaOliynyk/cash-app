@@ -1,10 +1,11 @@
 import axios from "axios";
 
 // Base URL
-const API_BASE_URL = 'https://cash-app-server-cydp.onrender.com/api';
+const API_BASE_URL = 'http://192.168.0.90:3000/api';
 
 //  https://cash-app-server-cydp.onrender.com
 //  http://192.168.0.90:3000
+
 export const loginUser = async ({ username, password }) => {
   try {
     const response = await axios.post(

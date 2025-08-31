@@ -1,19 +1,22 @@
 import { Component} from 'react';
-
-import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
+
+import { fetchUser } from "../../redux/userSlice";
+import { addExpenseToUser } from "../../redux/userSlice";
 
 import { addIncomeRequest } from '../../api';
 
-import './index.css'
-
 import Footer from '../../components/Footer';
 
+import './index.css'
+
+
 function withRouter(Component) {
-  return function(props) {
-    const navigate = useNavigate();
-    return <Component {...props} navigate={navigate} />;
-  };
+    return function(props) {
+        const navigate = useNavigate();
+        return <Component {...props} navigate={navigate} />;
+    };
 }
 
 class AddIncomePage extends Component{
@@ -26,6 +29,12 @@ class AddIncomePage extends Component{
             user: {},
             description: ""
         };
+    }
+    
+    componentDidMount() {
+        if (!this.props.user) {
+            this.props.fetchUser(); // загружаем пользователя
+        }
     }
 
     handleExpense = async e => {
@@ -56,6 +65,8 @@ class AddIncomePage extends Component{
             });
 
             if (expense.createdAt) {
+                this.props.addExpenseToUser(expense);
+
                 this.props.navigate(`/dashboard/${user.username}`);
             }
         } catch (error) {
@@ -77,11 +88,11 @@ class AddIncomePage extends Component{
     }
 
     render(){
-        if (!this.props.user) {
-            return <p>Loading...</p>; // user not fetched yet
-        }
-    
-        const { user } = this.props.user;
+        const { user, loading, error } = this.props;
+
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Error: {error}</p>;
+        if (!user) return <p>No user</p>;
 
         const { username, categories } = user
 
@@ -125,7 +136,6 @@ class AddIncomePage extends Component{
                                 ))
                                 }
                             </select>
-                            {/* <input type="text" placeholder="Description" onChange={e => this.setDesctiption(e)} className="expense-input" /> */}
 
                             <button type="submit" className="expense-button">
                                 Add an Income
@@ -134,10 +144,20 @@ class AddIncomePage extends Component{
                 </main>
 
                 <Footer user={this.props.user} />
-                {/* footer to add!! */}
             </>
         )
     }
 }
 
-export default withRouter(AddIncomePage);
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+const mapDispatchToProps = {
+    fetchUser,
+    addExpenseToUser,
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AddIncomePage));

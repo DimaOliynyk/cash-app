@@ -1,23 +1,14 @@
-import {React, Component} from 'react';
+import { Component } from 'react';
 import { NavLink } from "react-router-dom";
-
 import { connect } from "react-redux";
-import { fetchUser } from "../../redux/userSlice"; // путь к userSlice.js
-
-import './index.css'
 import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 
-import arrowDown from '../../images/arrow-down.png';
-import arrowUp from '../../images/arrow-up.png';
-import blackImage from '../../images/black-image.png';
-import LoginPage from '../LoginPage/index';
-
-import ExpensesLineChart from '../../components/ExpensesLineChart';
-
+import { fetchUser } from "../../redux/userSlice"; // путь к userSlice.js
 import { fetchExpenses, getUser } from '../../api';
+
 import Footer from '../../components/Footer';
 
-
+import './index.css'
 
 class DashboardPage extends Component {
   constructor(props) {
@@ -26,7 +17,8 @@ class DashboardPage extends Component {
       user: undefined,
       expenses: [],
       currentPage: 1,
-      pageSize: 4,
+      pageSize: 3,
+      loading: true, // new
     };
   }
 
@@ -34,24 +26,25 @@ class DashboardPage extends Component {
     const expenses = (await fetchExpenses()).reverse();
     const user = await getUser();
     this.props.fetchUser();
-    this.setState({ expenses, user });
+    this.setState({ expenses, user, loading: false });
   };
 
   handlePrevPage  = () => {
     this.setState((prevState) => ({
-            currentPage: Math.max(prevState.currentPage - 1, 1)
-        }));
+      currentPage: Math.max(prevState.currentPage - 1, 1)
+    }));
   };
 
   handleNextPage  = () => {
-  this.setState((prevState) => {
-    const maxPage = Math.ceil(prevState.expenses.length / prevState.pageSize);
-    return {
-      currentPage: Math.min(prevState.currentPage + 1, maxPage)
-    };
-  });
-};
-   getChartData = () => {
+    this.setState((prevState) => {
+      const maxPage = Math.ceil(prevState.expenses.length / prevState.pageSize);
+      return {
+        currentPage: Math.min(prevState.currentPage + 1, maxPage)
+      };
+    });
+  };
+  
+  getChartData = () => {
     const grouped = {};
 
     this.state.expenses.forEach(tx => {
@@ -79,7 +72,6 @@ class DashboardPage extends Component {
   render() {
     const { user, loading, error } = this.props;
 
-    if (loading) return <div>Загрузка...</div>;
     if (error) return <div>Ошибка: {error}</div>;
     if (!user) return null;
 
@@ -92,12 +84,11 @@ class DashboardPage extends Component {
 
     // const chartData = this.getChartData();
     let totalPages = Math.ceil(expenses.length / pageSize);
+
     if(totalPages === 0){
       totalPages = 1
     }
-
-
-      return (
+    return (
         <>
           <header className="DashboardPage-header">
             <h2 className="DashboardPage-header-greetings">Hi, {username}!</h2>
@@ -133,25 +124,25 @@ class DashboardPage extends Component {
               </div>
             </div>
 
-{/* <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-  <line x1="6" y1="18" x2="6" y2="10" /> 
-  <line x1="12" y1="18" x2="12" y2="6" /> 
-  <line x1="18" y1="18" x2="18" y2="4" /> 
-</svg> */}
-            {/* {chartData && chartData.length > 0 && chartData.some(item => item.value !== 0) && (
-              <div className="dashboardPage-chart-container">
-                <ExpensesLineChart data={chartData} />
-              </div>
-            )} */}
-
             <div className="dashboardPage-spends">
               <div className="row">
                 <p className="spend-recent">Transactions</p>
-                <NavLink to="#" className="see-all-transactions">See All</NavLink>
               </div>
 
               <div className="dashboardPage-spends-list">
-                {currentExpenses.map((expense) => (
+                {this.state.loading
+                ? (
+                    <>
+                      <div className="skeleton-spend">
+                        <div className="column">
+                          <div className="skeleton-name"></div>
+                          <div className="skeleton-date"></div>
+                        </div>
+                        <div className="skeleton-amount"></div>
+                      </div>
+                    </>
+                  )
+                :currentExpenses.map((expense) => (
                   <NavLink
                     to={`/transactions/${expense.id}`}
                     key={expense.id}
@@ -159,12 +150,6 @@ class DashboardPage extends Component {
                     className="spend"
                     style={{ textDecoration: 'none', color: 'inherit' }}
                   >
-                    {/* Show the category icon if exists, else fallback to blackImage */}
-                    {/* <img
-                      src={expense.category?.iconUrl}
-                      alt={expense.category?.name || "expense icon"}
-                      style={{ width: 24, height: 24 }}
-                    /> */}
                     <div>
                       <p className="spend-name">{expense.name || 'Unnamed'}</p>
                       <p className="spend-date">
@@ -199,7 +184,7 @@ class DashboardPage extends Component {
 
           <Footer user={this.state.user}/>
         </>
-      );
+    );
   }
 }
 

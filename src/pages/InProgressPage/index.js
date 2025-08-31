@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+
+import Footer from '../../components/Footer';
 
 import './index.css';
-import Footer from '../../components/Footer';
 
 export default class InProgressPage extends Component{
     render(){
